@@ -240,16 +240,17 @@ namespace System.Web.Handlers
 			if (assembly == null)
 				return String.Empty;
 
-			KeyedHashAlgorithm kha = ReusableHashAlgorithm;
-			if (kha != null) {
-				return GetResourceUrl (kha, assembly, resourceName, notifyScriptLoaded);
-			} else {
+			KeyedHashAlgorithm kha = null;//ReusableHashAlgorithm;
+
+			//if (kha != null) {
+			//	return GetResourceUrl (kha, assembly, resourceName, notifyScriptLoaded);
+			//} else {
 				MachineKeySection mks = MachineKeySection.Config;
 				using (kha = MachineKeySectionUtils.GetValidationAlgorithm (mks)) {
 					kha.Key = MachineKeySectionUtils.GetValidationKey (mks);
 					return GetResourceUrl (kha, assembly, resourceName, notifyScriptLoaded);
 				}
-			}
+			//}
 		}
 
 		static string GetResourceUrl (KeyedHashAlgorithm kha, Assembly assembly, string resourceName, bool notifyScriptLoaded)
