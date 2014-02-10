@@ -64,7 +64,21 @@ p { margin-bottom: 0.3em; margin-top: 0.1em }
 <div id="header">
 <div id="header-text">Application Exception</div>
 </div>
+
+<br />
+<div style="text-align:center;">
+	<img src="/errors/fiducial-logo.png" alt="Fiducial" />
+</div>
+<br />
+
+<div style="margin:auto; text-align:center;">
+<b>Une operation de maintenance est actuellement en cours.<br /> Merci de reessayer dans quelques instant.</b>
+</div>
+<br />
+<br />
+
 <div id="main">
-  <h1>@ExceptionType@</h1>
-  <h2 class="exceptionMessage">@ExceptionMessage@</h2>
+  <p style="color:black;">@ExceptionType@</p>
+  <p style="color:black;"><b>@ExceptionMessage@</b></p>
+  <br />
   <p><strong>Description:</strong> @Description@</p><p><strong>Details:</strong> @Details@</p>
