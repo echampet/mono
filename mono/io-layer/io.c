@@ -241,7 +241,7 @@ static void io_ops_init (void)
  */
 
 /*
- * Check if a file is writable by the current user.
+ * Check if a file is readonly by the current user.
  *
  * This is is a best effort kind of thing. It assumes a reasonable sane set
  * of permissions by the underlying OS.
@@ -249,31 +249,25 @@ static void io_ops_init (void)
  * We assume that basic unix permission bits are authoritative. Which might not
  * be the case under systems with extended permissions systems (posix ACLs, SELinux, OSX/iOS sandboxing, etc)
  *
- * The choice of access as the fallback is due to the expected lower overhead compared to trying to open the file.
+ * Fix pour fred, ne sera jamais accepté par mono
  *
- * The only expected problem with using access are for root, setuid or setgid programs as access is not consistent
- * under those situations. It's to be expected that this should not happen in practice as those bits are very dangerous
- * and should not be used with a dynamic runtime.
  */
 static gboolean
-is_file_writable (struct stat *st, const char *path)
+is_file_readonly (struct stat *st, const char *path)
 {
 	/* Is it globally writable? */
 	if (st->st_mode & S_IWOTH)
-		return 1;
+		return 0;
 
 	/* Am I the owner? */
 	if ((st->st_uid == geteuid ()) && (st->st_mode & S_IWUSR))
-		return 1;
+		return 0;
 
 	/* Am I in the same group? */
 	if ((st->st_gid == getegid ()) && (st->st_mode & S_IWGRP))
-		return 1;
+		return 0;
 
-	/* Fallback to using access(2). It's not ideal as it might not take into consideration euid/egid
-	 * but it's the only sane option we have on unix.
-	 */
-	return access (path, W_OK) == 0;
+	return 1;
 }
 
 
@@ -296,14 +290,14 @@ static guint32 _wapi_stat_to_file_attributes (const gchar *pathname,
 
 	if (S_ISDIR (buf->st_mode)) {
 		attrs = FILE_ATTRIBUTE_DIRECTORY;
-		if (!is_file_writable (buf, pathname)) {
+		if (is_file_readonly (buf, pathname)) {
 			attrs |= FILE_ATTRIBUTE_READONLY;
 		}
 		if (filename[0] == '.') {
 			attrs |= FILE_ATTRIBUTE_HIDDEN;
 		}
 	} else {
-		if (!is_file_writable (buf, pathname)) {
+		if (is_file_readonly (buf, pathname)) {
 			attrs = FILE_ATTRIBUTE_READONLY;
 
 			if (filename[0] == '.') {
