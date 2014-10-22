@@ -594,8 +594,16 @@ namespace System.Collections.Specialized
 			_Item item = FindFirstMatchedItem(name);
 			if (item!=null)
 				item.value=value;
-			else 
+			else {
+				//If the key exists (but value is null), remove the key first
+				if (name!=null && m_ItemsContainer.ContainsKey(name))
+				{
+					Console.Error.WriteLine("WARNING: Key duplication when adding: "+name+", so we remove it first" );
+					BaseRemove(name);
+				}
+
 				BaseAdd(name, value);
+			}
 		}
 
 		[MonoTODO]
