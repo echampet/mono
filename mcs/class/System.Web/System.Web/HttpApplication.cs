@@ -1557,6 +1557,7 @@ namespace System.Web
 			if (initialization_exception != null) {
 				Exception e = initialization_exception;
 				HttpException exc = HttpException.NewWithCode (String.Empty, e, WebEventCodes.RuntimeErrorRequestAbort);
+				context.Response.StatusCode = 500;
 				FinalErrorWrite (context.Response, exc.GetHtmlErrorMessage ());
 				PipelineDone ();
 				return;
