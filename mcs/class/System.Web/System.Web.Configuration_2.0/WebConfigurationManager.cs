@@ -536,7 +536,7 @@ namespace System.Web.Configuration {
 			}
 #else
 #if MONOWEB_DEP
-			object value = SettingsMappingManager.MapSection (get_runtime_object.Invoke (section, new object [0]));
+			object value = SettingsMappingManager.MapSection (section.GetRuntimeObject ());
 #else
 			object value = null;
 #endif
@@ -687,7 +687,7 @@ namespace System.Web.Configuration {
 			configurations.Remove (GetCurrentPath (ctx));
 		}
 
-#if TARGET_J2EE || MONOWEB_DEP
+#if TARGET_J2EE
 		readonly static MethodInfo get_runtime_object = typeof (ConfigurationSection).GetMethod ("GetRuntimeObject", BindingFlags.NonPublic | BindingFlags.Instance);
 #endif		
 
