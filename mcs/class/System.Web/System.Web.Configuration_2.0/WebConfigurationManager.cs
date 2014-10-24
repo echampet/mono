@@ -545,7 +545,14 @@ namespace System.Web.Configuration {
 				cacheKey = baseCacheKey ^ cachePath.GetHashCode ();
 			else
 				cacheKey = baseCacheKey;
-			
+
+			Console.WriteLine(
+				(sectionName != null ? sectionName : "<null>")+"|"+
+				(cachePath != null ? cachePath : "<null>")+"|"+
+				(configPath != null ? configPath : "<null>")+"|"+
+				(value != null ? value.GetType().ToString() : "<null>")
+			);
+
 			AddSectionToCache (cacheKey, value);
 			return value;
 		}
