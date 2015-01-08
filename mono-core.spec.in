@@ -1509,3 +1509,42 @@ not install anything from outside the mono source (XSP, mono-basic, etc.).
 %dir %_prefix/lib/mono/compat-2.0
 
 %changelog
+
+%package -n mono-intranet
+License:        LGPL v2.1 only
+Summary:        Install mono for intranet needs
+Group:          Development/Languages/Mono
+Requires:       mono-core = %version-%release
+Requires:       ibm-data-db2 = %version-%release
+Requires:       libmono-2_0-1 = %version-%release
+Requires:       libmono-2_0-devel = %version-%release
+%if %llvm == yes
+Requires:       libmono-llvm0 = %version-%release
+%endif
+%if %sgen == yes
+Requires:       libmonosgen-2_0-1 = %version-%release
+Requires:       libmonosgen-2_0-devel = %version-%release
+%endif
+Requires:       mono-data = %version-%release
+Requires:       mono-data-oracle = %version-%release
+Requires:       mono-data-sqlite = %version-%release
+Requires:       mono-devel = %version-%release
+Requires:       mono-extras = %version-%release
+Requires:       mono-locale-extras = %version-%release
+Requires:       mono-nunit = %version-%release
+Requires:       mono-wcf = %version-%release
+Requires:       mono-web = %version-%release
+Requires:       mono-winforms = %version-%release
+Requires:       mono-winfxcore = %version-%release
+Requires:       monodoc-core = %version-%release
+#just to be sure, remove the old npgsql lib
+Conflicts:      mono-data-postgresql
+
+%description -n mono-intranet
+Mono meta package for the intranet
+
+%files -n mono-intranet
+%defattr(-, root, root)
+%dir %_prefix/lib/mono/compat-2.0
+
+%changelog
