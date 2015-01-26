@@ -7,9 +7,12 @@
 %define sgen no
 %endif
 
+%{?scl:%scl_package mono-core}
+%{!?scl:%global pkg_name %{name}}
+
 %undefine _missing_build_ids_terminate_build
 
-Name:           mono-core
+Name:           %{?scl_prefix}mono-core
 License:        LGPL v2.1 only
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
@@ -29,7 +32,7 @@ BuildRequires:  valgrind-devel
 %if %llvm == yes
 BuildRequires:  llvm-mono-devel
 %endif
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildRoot:      %{_tmppath}/%{pkg_name}-%{version}-build
 Obsoletes:      mono
 Obsoletes:      mono-cairo
 Obsoletes:      mono-drawing
@@ -68,6 +71,7 @@ Provides:       mono(System) = 1.0.5000.0
 Provides:       mono(System.Security) = 1.0.5000.0
 Provides:       mono(System.Xml) = 1.0.5000.0
 Provides:       mono(mscorlib) = 1.0.5000.0
+%{?scl:Requires: %scl_runtime}
 
 #%define _use_internal_dependency_generator 0
 #%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | prefix=%{buildroot}%{_prefix} %{buildroot}%{_bindir}/mono-find-provides ; } | sort | uniq'
